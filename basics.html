@@ -1,0 +1,119 @@
+<!-- Referred
+    https://teamtreehouse.com/
+    https://www.youtube.com/playlist?list=PL6gx4Cwl9DGBuKtLgPR_zWYnrwv-JllpA
+ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React JS 1st tutorial - Basics</title>
+
+     <!--
+          If I don't use it then you can see an error
+          "Invalid regular expression : Range out of order in character class", If you inspect HTML code
+          in browser
+          This is because babel-browser.min.js is not ascii, its format is UTF-8
+
+     -->
+    <meta charset="utf-8">
+
+    <!-- Humdrum JS file needed for React JS -->
+    <script src="./scripts/react.js"></script>
+
+    <!-- The logic to convert virtual DOM into real DOM is in below JS -->
+    <script src="./scripts/react-dom.js"></script>
+
+    <!-- Babel compiler that enables us to use JSX without building explicitly -->
+    <script src="./scripts/babel-browser.min.js"></script>
+
+  </head>
+
+  <body>
+    <div id="container1">   </div>  <br/><br/>
+
+    <h2> Custom Component example1 - Type2 </h2>
+    <div id="container2">   </div>  <br/><br/>
+
+    <h2> Custom Component example2 - Type3 ( I am wrapping multiple CustomComponent together) </h2>
+    <div id="container3">   </div>
+
+    <!--
+          text/babel tells babel compiler that code inside this tag
+          should be compiled first before executing.
+          You will get error "Uncaught SyntaxError: Unexpected token" if not used
+    -->
+    <script type="text/babel">
+       /*
+         We will use function ReactDOM.render()
+         It takes 2 attributes, 1st is virtual DOM element and
+         2nd is real DOM element where you wanna actually place data
+       */
+
+        ReactDOM.render(<h2>Hello there! I am coming from React JS Virtual DOM - Type1</h2  >, document.getElementById('container1'));
+
+        /*
+
+         Without JSX , plain old JS that browser understands, code is clumsy as:
+
+         ReactDOM.render(React.createElement(
+                                              'h1',
+                                              null,
+                                              'Hello there! I am coming from React JS Virtual DOM :) '
+                                            )
+                          ,document.getElementById('container'));
+
+         Thank God, we have babel :)
+
+        */
+
+        // ******This was not a good way to add DOM elements instead, we use COMPONENT******
+
+        /*
+          component can be understand as DOM element itself and we write a method for it,
+          by convention, it's first letter starts in Upper case to differentiate it from
+          default elements starting in lower case like <h1>, <br>,.......
+          Everything that appears on website is a component whether it is progress bar or
+          button or anything else....
+        */
+
+        function CustomComponent() {
+           /*
+            components should  return single DOM element and if we want to return
+            multiple DOM elements then I should group them together is elements like
+            div or span or....
+            components can be put together to make bigger component
+
+            component always return HTML.
+          */
+          return (
+            <div>
+              <h4> I am "h4tag" of CustomComponent </h4>
+              <p> I am "p tag" of CustomComponent </p>
+            </div>
+          );
+        }
+
+        ReactDOM.render(<CustomComponent />, document.getElementById('container2'));
+
+        /*
+          Let's understand component in deep!
+          Every single component can return only and only and only (Sorry for emphasizing ;) ) one parent element.
+
+          That's why we wrapped multiple html elements in one div above.
+
+          render() method can also display or render just one parent element, see below:
+          ReactDOM.render(<CustomComponent /><CustomComponent /><CustomComponent />, document.getElementById('container2'));
+          This is an error, so is there any solution to do it???????????????????
+          Yes, my friend, simply wrap multiple  <CustomComponent> together
+
+        */
+
+        ReactDOM.render(<div> <CustomComponent /><CustomComponent /> </div>, document.getElementById('container3'));
+
+    </script>
+
+
+
+  </body>
+
+</html>
