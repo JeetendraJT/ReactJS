@@ -1,0 +1,108 @@
+<!-- Referred
+    https://teamtreehouse.com/
+    https://www.youtube.com/playlist?list=PL6gx4Cwl9DGBuKtLgPR_zWYnrwv-JllpA
+ -->
+
+ <!--
+  Let's say I am seeing details of one class in a component
+
+  For another class, I don't want to make new component, but we would like to just
+  change CRN, Professor name, class room and some other details in same component
+
+  So we make blueprint or template for just one component and customize it for
+  reusability.
+
+  I will be making component here in different way as compare to what I did in basics.html
+
+  To avoid same multi-line commenting for elements/concepts as I did in basics.html, I will use
+  **PREV-COMMENTED** so that you can check basics.html to understand some basics concepts
+
+ -->
+
+ <!DOCTYPE html>
+ <html>
+   <head>
+     <title>React JS 1st tutorial - Basics</title>
+
+     <!--   **PREV-COMMENTED**  -->
+     <meta charset="utf-8">
+
+     <!-- Humdrum JS file needed for React JS -->
+     <script src="./scripts/react.js"></script>
+
+     <!-- The logic to convert virtual DOM into real DOM is in below JS -->
+     <script src="./scripts/react-dom.js"></script>
+
+     <!-- Babel compiler that enables us to use JSX without building explicitly -->
+     <script src="./scripts/babel-browser.min.js"></script>
+
+   </head>
+
+   <body>
+
+     <h2> List of classes I am registering for Fall'2016 </h2>
+
+     <h3>
+       ( This example uses properties in components, based on which
+       we can use same component for different context )
+     </h3>
+
+     <div id="course">   </div>  <br/><br/>
+
+   </body>
+
+   <!--   **PREV-COMMENTED**  -->
+   <script type="text/babel">
+
+    /*
+       As seen in basics.html, I just created function names *Component Name*
+       and used it directly as component element, but here I am creating var
+       and creating function for it.
+    */
+    var Course = React.createClass({
+        render:function(){
+          //    **PREV-COMMENTED**
+            return (
+                      <div>
+
+                        {/*
+
+                            This is a way we comment in JSX code, weird ?? I know. ;)
+                            But it is what it is, lol
+                            Reason is we can’t directly use HTML comments inside of JSX
+                            because JSX will get confuse and thinks that these are DOM nodes.
+
+                            Please check http://wesbos.com/react-jsx-comments/ great article on
+                            JSX commenting.
+
+                            Properties are accessed by this.props.PROPERTY_NAME
+                            They are like attributes of html elements, whatever value we set
+                            from component property is accessed through this function
+                            and displayed accordingly.
+
+                            Hence, this way we use same component to display different context
+                          */
+                        }
+
+                          <b>Class: </b>{this.props.className} <br/>
+                          <b>CRN: </b>{this.props.classCRN} <br/>
+                          <b>Professor: </b>{this.props.classProf} <br/>
+                          <b>Class-room: </b>{this.props.classRoom} <br/><br/>
+
+                      </div>
+                    );
+        }
+    });
+
+    //    **PREV-COMMENTED**
+    ReactDOM.render(
+                      <div>
+                        <Course className="Algorithms" classCRN="3234" classProf="Dr. Liu" classRoom="EDU 2013" />
+                        <Course className="Machine Learning" classCRN="1273" classProf="Dr. Hall" classRoom="ISA 316" />
+                        <Course className="Advance Databases" classCRN="9832" classProf="Dr. Tu" classRoom="ENA 123" />
+                      </div>
+                      ,
+                      document.getElementById("course")
+    );
+
+   </script>
