@@ -63,7 +63,6 @@
         We can pass entire function,
 
   -->
-
   <!DOCTYPE html>
   <html>
     <head>
@@ -74,223 +73,225 @@
       <script src="./scripts/react.js"></script>
       <script src="./scripts/react-dom.js"></script>
       <script src="./scripts/babel-browser.min.js"></script>
+	  </head>
 
-      <style>
-          .styleTODOs{
-            width: 304px;
-            color: orange;
-            float: left;
-            margin-right: 20px;
-          }
+    <style>
+        .styleTODOs{
+          width: 304px;
+          color: green;
+          float: left;
+          margin-right: 20px;
+        }
 
-          .layoutTODO{
-            margin-bottom: 10px;
-            border-bottom: dashed;
-            border-bottom-color: black;
-          }
-      </style>
-
-    </head>
+        .layoutTODO{
+          margin-bottom: 10px;
+          border-bottom: dashed;
+          border-bottom-color: black;
+        }
+    </style>
 
     <body>
 
-      <h3 > TODO List: </h3>
+      <h3 > TODO List:</h3>
       <div id="todoList">   </div>
 
-    </body>
+      <script type="text/babel">
 
-    <script type="text/babel">
+       var TODOListComp = React.createClass({
 
-     var TODOListComp = React.createClass({
+          getInitialState: function() {
+            return {editMode:false}
+            {
+              // We can set any number of states separated by commas, Here just 1 as editMode :) :) :)
+            }
+          },
 
-        getInitialState: function() {
-          return {editMode: false}
-          {
-            // We can set any number of states separated by commas, Here just 1 as editMode :) :) :)
-          }
-        },
+          edit: function(){
+              this.setState({editMode: true});
+          },
 
-        edit: function(){
-            this.setState({editMode: true});
-        },
+          delete: function(){
+              // we passed function as property from other component
+              this.props.deleteTODOFromList(this.props.index)
+          },
 
-        delete: function(){
-            // we passed function as property from other component
-            this.props.deleteTODOFromList(this.props.index);
-        },
+          save: function(){
+            {
+              // when we are done editing, we hit save and editing should be false
 
-        save: function(){
-          {
-            // when we are done editing, we hit save and editing should be false
+              //Also we want to save value of textarea so used .value for reference
+            }
+            this.props.updateTODOText(this.refs.editedTODO.value,
+                                      this.props.index);
+            this.setState({editMode: false});
 
-            //Also we want to save value of textarea so used .value for reference
-          }
-          this.props.updateTODOText(this.refs.editedTODO.value,
-                                    this.props.index);
-          this.setState({editMode: false});
-
-        },
-
-        /*
-          Function for view mode, this is responsible for displaying Todo in
-          read only mode with 2 options Edit and Delete, when user hits Edit
-          then we switch to Edit mode and renderEditMode(){...} is called which
-          is explained right after it Hurray :) :) ;P
-
-        */
-        renderViewMode:function(){
-             return (
-                       <div className="layoutTODO" >
-                            /*
-                                 CSS class is accessed by keyword className because JS
-                                 already has reserved word class :)
-
-                                 Text between component is called as children and it
-                                 is a static text. It is accessed by existing property "children"
-                                 as used below in code, for example, for 1st:
-                                 <TODOListComp> Complete all assignments due for today </TODOListComp>
-                                 "Complete all assignments due for today" is called as a child of
-                                 component "TODOListComp"
-                            */
-                           <span className="styleTODOs"><b>Task:</b> {this.props.children} </span>
-                           <button onClick={this.edit}>Change Me</button>
-                           <span> </span>
-                           <button onClick={this.delete}>Delete Me</button>
-                       </div>
-                     );
-         },
-
-         /*
-            Gives user an option to edit Todo :) Wow
-         */
-         renderEditMode:function(){
-              return (
-                        <div className="layoutTODO">
-                            <textarea ref="editedTODO" className="styleTODOs" defaultValue={this.props.children}></textarea>
-                            {
-                              /*
-                                Pay attention to error :
-                                "If you supply `defaultValue` on a <textarea>, do not pass children."
-                                This will come when you put space or some value between <textarea>...</textarea>
-                                You are passing default value and also setting it's value so
-                                you get "uncaught error" if you inspect in browser
-                              */
-                            }
-                            <button onClick={this.save}>Save Me</button>
-                        </div>
-                      );
           },
 
           /*
-            Above two are custom functions, whenever we use components, React looks for
-            render: function(){.........} so lets define that and call above two UDF from it
-
-            Depending on mode(view or edit), call UDF accordingly
+            Function for view mode, this is responsible for displaying Todo in
+            read only mode with 2 options Edit and Delete, when user hits Edit
+            then we switch to Edit mode and renderEditMode(){...} is called which
+            is explained right after it Hurray :) :) ;P
 
           */
-          render: function(){
-            if(this.state.editMode){
-              return this.renderEditMode();
+          renderViewMode:function(){
+               return (
+                         <div className="layoutTODO" >
+  					      {
+                              /*
+                                   CSS class is accessed by keyword className because JS
+                                   already has reserved word class :)
+
+                                   Text between component is called as children and it
+                                   is a static text. It is accessed by existing property "children"
+                                   as used below in code, for example, for 1st:
+                                   <TODOListComp> Complete all assignments due for today </TODOListComp>
+                                   "Complete all assignments due for today" is called as a child of
+                                   component "TODOListComp"
+                              */
+  						   }
+                             <span className="styleTODOs"><b>Task:</b> {this.props.children} </span>
+                             <button onClick={this.edit}>Change Me</button>
+                             <span> </span>
+                             <button onClick={this.delete}>Delete Me</button>
+                         </div>
+                       );
+           },
+
+           /*
+              Gives user an option to edit Todo :) Wow
+           */
+           renderEditMode:function(){
+                return (
+                          <div className="layoutTODO">
+                              <textarea ref="editedTODO" className="styleTODOs" defaultValue={this.props.children}></textarea>
+                              {
+                                /*
+                                  Pay attention to error :
+                                  "If you supply `defaultValue` on a <textarea>, do not pass children."
+                                  This will come when you put space or some value between <textarea>...</textarea>
+                                  You are passing default value and also setting it's value so
+                                  you get "uncaught error" if you inspect in browser
+                                */
+                              }
+                              <button onClick={this.save}>Save Me</button>
+                          </div>
+                        );
+            },
+
+            /*
+              Above two are custom functions, whenever we use components, React looks for
+              render: function(){.........} so lets define that and call above two UDF from it
+
+              Depending on mode(view or edit), call UDF accordingly
+
+            */
+            render: function(){
+              console.log("In TODOListComp")
+              if(this.state.editMode){
+                return this.renderEditMode();
+              }
+              else{
+                return this.renderViewMode();
+              }
             }
-            else{
-              return this.renderViewMode();
-            }
-          }
 
 
-     });
-
-      /*
-       This will contain each TODOs to control them as a single unit
-       This is like manager for all "todos"
-
-       ReactDOM.render(<ParentComp/>,document.getElementById("todoList"));
-       Instead of this we could have rendered Like:
-
-       ReactDOM.render(
-           <div>
-             <TODOListComp> Complete all assignments due for today </TODOListComp> <br/>
-             <TODOListComp> Work meeting: 4 - 5 pm </TODOListComp> <br/>
-             <TODOListComp> Remind bro to do shopping on Amazon </TODOListComp> <br/>
-             <TODOListComp> Get Groceries today </TODOListComp> <br/>
-             <TODOListComp> Call your freind Alex, its his Bday </TODOListComp> <br/>
-           </div>
-           ,document.getElementById("todoList")
-       );
-
-       But, this is like independent set of components, no one knows about other
-       So we are using concept of Multiple Child components
-
-      */
-     var ParentComp = React.createClass({
-
-      getInitialState: function(){
-          return{
-            todos:[
-                'Complete all assignments due for today',
-                'Work meeting: 4 - 5 pm',
-                'Remind bro to do shopping on Amazon',
-                'Get Groceries today',
-                'Call your freind Alex, its his Bday'
-              ]
-          }
-      },
-
-      // just need index of an array to be deleted{}
-      deleteTODO: function(i){
-          var tempStateArr = this.state.todos;
-          // How many items you want to remove and where to start
-          tempStateArr.splice(i,1);
-          // from i delete, just 1 :) wow , you wanna do it when you hit deltete
-
-          //change the state of todos now
-          this.setState({todos:tempStateArr});
-      },
-
-      updateTODO: function(editedTODO, i){
-          var tempStateArr = this.state.todos;
-
-          // update what is coming from text area
-          tempStateArr[i] = editedTODO;
-
-          //change the state of todos now
-          this.setState({todos:tempStateArr});
-
-      },
-
-      eachTODO: function (text, i) {
-        // i will increment as per size of todos array from 0 to .....
-        // key is for react and index is for us
+       });
 
         /*
-            We want to pass on to callback function edit and delete
-            We will pass functions as properties
+         This will contain each TODOs to control them as a single unit
+         This is like manager for all "todos"
 
-            {text} gives value of ith index from todos array
+         ReactDOM.render(<ParentComp/>,document.getElementById("todoList"));
+         Instead of this we could have rendered Like:
+
+         ReactDOM.render(
+             <div>
+               <TODOListComp> Complete all assignments due for today </TODOListComp> <br/>
+               <TODOListComp> Work meeting: 4 - 5 pm </TODOListComp> <br/>
+               <TODOListComp> Remind bro to do shopping on Amazon </TODOListComp> <br/>
+               <TODOListComp> Get Groceries today </TODOListComp> <br/>
+               <TODOListComp> Call your freind Alex, its his Bday </TODOListComp> <br/>
+             </div>
+             ,document.getElementById("todoList")
+         );
+
+         But, this is like independent set of components, no one knows about other
+         So we are using concept of Multiple Child components
 
         */
-        return ( <TODOListComp key={i}  index={i}
-                    updateTODOText={this.updateTODO}
-                    deleteTODOFromList={this.deleteTODO}
-                  >
-                      {text}
-                  </TODOListComp> );
-      },
+       var ParentComp = React.createClass({
 
-      render: function (){
-         return (
-           <div>
-             <span className="styleTODOs">
-                  { this.state.todos.map(this.eachTODO) }
-             </span>
-             <br/>
-           </div>
-         );
-      }
-     });
+        getInitialState: function(){
+            return{
+              todos:[
+                  "Complete all assignments due for today",
+                  "Work meeting: 4 - 5 pm",
+                  "Remind bro to do shopping on Amazon",
+                  "Get Groceries today",
+                  "Call your freind Alex, its his Bday"
+                ]
+            }
+        },
 
-     ReactDOM.render(<ParentComp/>,document.getElementById("todoList"));
+        // just need index of an array to be deleted{}
+        deleteTODO: function(i){
+            console.log("deleteTODO callback");
+            var tempStateArr = this.state.todos;
+            // How many items you want to remove and where to start
+            tempStateArr.splice(i,1);
+            // from i delete, just 1 :) wow , you wanna do it when you hit deltete
 
-    </script>
+            // change the state of todos now
+            this.setState({todos:tempStateArr})
+        },
 
+        updateTODO: function(editedTODO, i){
+            console.log("editedTODO callback");
+            var tempStateArr = this.state.todos;
+
+            // update what is coming from text area
+            tempStateArr[i] = editedTODO;
+
+            //change the state of todos now
+            this.setState({todos:tempStateArr})
+
+        },
+
+        eachTODO: function (text, i) {
+          /*
+             i will increment as per size of todos array from 0 to .....
+             key is for react(not for progrmmers) and index is for us
+             we won't mess with react stuff ;)
+          */
+          /*
+              We want to pass on to callback function edit and delete
+              We will pass functions as properties
+
+              {text} gives value of ith index from todos array
+
+          */
+          return ( <TODOListComp key={i} index={i} updateTODOText={this.updateTODO} deleteTODOFromList={this.deleteTODO}>
+                       {text}
+                    </TODOListComp>
+  		       );
+
+        },
+
+        render: function (){
+           return (
+             <div>
+               <span className="styleTODOs">
+                    { this.state.todos.map(this.eachTODO) }
+               </span>
+             </div>
+           )
+        }
+       });
+
+       ReactDOM.render(<ParentComp/>,document.getElementById("todoList"));
+
+      </script>
+    </body>
  </html>
